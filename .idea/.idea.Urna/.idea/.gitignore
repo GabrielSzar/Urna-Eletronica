@@ -2,9 +2,9 @@
 /shelf/
 /workspace.xml
 # Rider ignored files
-/.idea.UrnaEletronica.iml
-/projectSettingsUpdater.xml
 /modules.xml
+/projectSettingsUpdater.xml
+/.idea.Urna.iml
 /contentModel.xml
 # Editor-based HTTP Client requests
 /httpRequests/
