@@ -7,14 +7,87 @@
         x:Class="Urna.UI.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Urna.UI">
+        Classes="MainWindow"
+        Title="Urna Eletrônica">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+    
+    <ScrollViewer>
+        <StackPanel Classes="Body">
+            <Border Classes="Border">
+                <StackPanel>
+                    <Border Classes="ViewerBorder">
+                        <StackPanel Classes="Viewer">
+                            <TextBlock Text="{Binding _cargoAtual}" Foreground="Black"/>
+                            <ItemsControl ItemsSource="{Binding QuadradosVisuais}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Classes="Quadrados">
+                                            <StackPanel >
+                                                <TextBlock Text="{Binding}"  Foreground="Black"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                    <StackPanel Classes="Content">
+                        <Image Source="../Assets/JusEl.png" Classes="IconJusticaEleitoral"/>
+                        <Grid Classes="NumPadGrid"
+                              RowDefinitions="Auto,Auto,Auto,Auto"
+                              ColumnDefinitions="Auto,Auto,Auto">
+                            <Button Content="1" Grid.Row="0" Grid.Column="0" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="1"/>
+                            <Button Content="2" Grid.Row="0" Grid.Column="1" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="2"/>
+                            <Button Content="3" Grid.Row="0" Grid.Column="2" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="3"/>
+                            <Button Content="4" Grid.Row="1" Grid.Column="0" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="4"/>
+                            <Button Content="5" Grid.Row="1" Grid.Column="1" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="5"/>
+                            <Button Content="6" Grid.Row="1" Grid.Column="2" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="6"/>
+                            <Button Content="7" Grid.Row="2" Grid.Column="0" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="7"/>
+                            <Button Content="8" Grid.Row="2" Grid.Column="1" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="8"/>
+                            <Button Content="9" Grid.Row="2" Grid.Column="2" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="9"/>
+                            <Button Content="0" Grid.Row="3" Grid.Column="1" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="0"/>
+                        </Grid>
+                        <StackPanel Classes="VoteButtonPanel">
+                            <Button Classes="VoteButtonBranco VoteButton" Content="Branco"
+                                    Command="{Binding BrancoCommand}"/>
+                            <Button Classes="VoteButtonCorrige VoteButton" Content="Corrige"
+                                    Command="{Binding CorrigeCommand}"/>
+                            <Button Classes="VoteButtonConfirma VoteButton" Content="Confirma"
+                                    Command="{Binding ConfirmarVotoCommand}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
 </Window>

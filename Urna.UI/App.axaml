@@ -9,7 +9,9 @@
         <local:ViewLocator/>
     </Application.DataTemplates>
   
+       
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="avares://Urna.UI/Styles/MainWindowStyle.axaml" />
     </Application.Styles>
 </Application>
