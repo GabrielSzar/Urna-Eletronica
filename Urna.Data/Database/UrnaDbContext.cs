@@ -10,6 +10,6 @@ public class UrnaDbContext : DbContext
         optionsBuilder.UseSqlite(DatabaseConfig.GetConnString());
     }
 
-    DbSet<EleitorModel> Eleitors { get; set; }
-    DbSet<CandidatoModel> Candidatos { get; set; }
+    public DbSet<EleitorModel> Eleitors { get; set; }
+    public DbSet<CandidatoModel> Candidatos { get; set; }
 }
