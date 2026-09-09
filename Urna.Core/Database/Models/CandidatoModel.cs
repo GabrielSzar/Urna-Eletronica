@@ -1,3 +1,5 @@
+using Urna.Core.Database.Enums;
+
 namespace Urna.Core.Database.Models;
 
 public class CandidatoModel
@@ -7,4 +9,6 @@ public class CandidatoModel
     public string ?Nome { get; set; }
     public string ?Cargo { get; set; }
     public int NumVotos { get; set; } = 0;
+    public Partidos Partido { get; set; }
+    public string ?FotoCandidato { get; set; }   
 }
