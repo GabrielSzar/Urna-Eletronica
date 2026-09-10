@@ -3,10 +3,12 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
-UrnaEletronica/Igor
+# Arquivos criados automaticamente
+urna.db
 
 # dotenv files
 .env
+appsettings.json
 
 # User-specific files
 *.rsuser
