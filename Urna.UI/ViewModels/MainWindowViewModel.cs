@@ -1,38 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
+using Avalonia.Data.Converters;
+using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Urna.UI.Models;
 
 namespace Urna.UI.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
-{
-    private static readonly string[] OrdemCargos = 
-        ["DeputadoFederal", "DeputadoEstadual", "Senador", "Senador", "Governador", "Presidente"];
-
-    private static readonly Dictionary<string, int> DigitosPorCargo = new()
-    {
-        { "DeputadoFederal", 4 },
-        { "DeputadoEstadual", 5 },
-        { "Senador", 3 },
-        { "Governador", 2 },
-        { "Presidente", 2 }
-    };
-
-    private string _votoPrimeiroSenador =string.Empty;
+{   
+    [ObservableProperty] private ObservableCollection<Cargo> _cargosLista = 
+        [new ("DeputadoFederal", true, 4), 
+         new ("DeputadoEstadual", false, 5),
+         new ("Senador", false, 3),
+         new ("Senador", false, 3),
+         new ("Governador", false, 2),
+         new ("Presidente", false, 2)];
+    public IEnumerable<char> QuadradosVisuais => NumeroDigitado.PadRight(MaxDigitos, ' ');
     [ObservableProperty] 
+    [NotifyPropertyChangedFor(nameof(QuadradosVisuais))]
+    //Qunado IndiceCArgoAtual Mudar Atualize QuadrosVisuais
     private int _indiceCargoAtual = 0;
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(QuadradosVisuais))]
     private string _numeroDigitado = string.Empty;
-    [ObservableProperty]
-    private int _maxDigitos = DigitosPorCargo[OrdemCargos[0]]; 
-    private string _cargoAtual => OrdemCargos[IndiceCargoAtual];
-    partial void OnIndiceCargoAtualChanged(int value)
-    {
-        OnPropertyChanged(nameof(_cargoAtual));
-        MaxDigitos = DigitosPorCargo[_cargoAtual];
-    }
+    private int MaxDigitos => CargosLista[IndiceCargoAtual].Digitos; 
+    private string? CargoAtual => CargosLista[IndiceCargoAtual].Nome;
+    private string _votoPrimeiroSenador = string.Empty;
     [RelayCommand]
     private void AdicionarNumero(string digito)
     {   
@@ -43,7 +41,8 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [RelayCommand]
     private void Branco()
-    {
+    {   
+        // Função de Aparecer para confirmar
         AvancarVoto();
     }
     [RelayCommand]
@@ -54,7 +53,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void ConfirmarVoto()
     {
-        if (NumeroDigitado.Length != MaxDigitos)
+        if (NumeroDigitado.Length != MaxDigitos) 
             return;
         var numero = Convert.ToInt32(NumeroDigitado);
         // var candidatos = _candidatoRepository.ListarPorCargo(CargoAtual);
@@ -64,9 +63,9 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     private void AvancarVoto()
-    {   
-        _votoPrimeiroSenador = IndiceCargoAtual == 3 ? NumeroDigitado : string.Empty; // caso o voto seja o primeiro senador
-        if (IndiceCargoAtual > OrdemCargos.Length - 1)
+    {   // caso o voto seja o primeiro senador
+        _votoPrimeiroSenador = IndiceCargoAtual == 3 ? NumeroDigitado : string.Empty; 
+        if (IndiceCargoAtual > CargosLista.Count - 2)
         {
             FimVotacao();
         }
@@ -75,15 +74,40 @@ public partial class MainWindowViewModel : ViewModelBase
             IndiceCargoAtual += 1;
         }  
         NumeroDigitado = string.Empty;
-        MaxDigitos = DigitosPorCargo[_cargoAtual];
+        CargoASerVotado();
     }
+    
 
     private void FimVotacao()
     {
         IndiceCargoAtual = 0;
     }
-    public IEnumerable<char> QuadradosVisuais =>
-        NumeroDigitado.PadRight(MaxDigitos, ' ');
-    partial void OnNumeroDigitadoChanged(string value) => OnPropertyChanged(nameof(QuadradosVisuais));
-    partial void OnMaxDigitosChanged(int value) => OnPropertyChanged(nameof(QuadradosVisuais));
+
+    private void CargoASerVotado()
+    {
+        var selecionado = CargosLista.FirstOrDefault(i => i.Selecionado == true);
+        if (selecionado == null)
+        {
+            CargosLista[0].Selecionado = true;
+            return;
+        }
+        var index = CargosLista.IndexOf(selecionado);
+        CargosLista[index].Selecionado = false;
+        index = index >= CargosLista.Count - 1 ? 0 : index + 1;
+        CargosLista[index].Selecionado = true;
+    }
+}
+
+public class SelecionadoParaBrushConverter : IValueConverter
+{
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        bool selecionado = (bool)value!;
+        return selecionado ? Brushes.Black : Brushes.White;
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
 }

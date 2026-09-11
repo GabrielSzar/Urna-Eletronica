@@ -1,4 +1,5 @@
 <Window xmlns="https://github.com/avaloniaui"
+        xmlns:local="clr-namespace:Urna.UI.ViewModels"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:Urna.UI.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,24 +10,44 @@
         Icon="/Assets/avalonia-logo.ico"
         Classes="MainWindow"
         Title="Urna Eletrônica">
-
+    
+    <Window.Resources>
+        <local:SelecionadoParaBrushConverter x:Key="SelecionadoParaBrush" />
+    </Window.Resources>
+    
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    
     <ScrollViewer>
+        
         <StackPanel Classes="Body">
             <Border Classes="Border">
                 <StackPanel>
                     <Border Classes="ViewerBorder">
                         <StackPanel Classes="Viewer">
-                            <TextBlock Text="{Binding _cargoAtual}" Foreground="Black"/>
+                            
+                            <ItemsControl ItemsSource="{Binding CargosLista}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/> 
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Nome}" 
+                                                   Foreground="Black"
+                                                   Background="{Binding Selecionado, 
+                                                   Converter={StaticResource SelecionadoParaBrush}}" />
+                                    </DataTemplate> 
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            
                             <ItemsControl ItemsSource="{Binding QuadradosVisuais}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
+                                        <StackPanel Orientation="Horizontal"/> 
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
@@ -39,6 +60,7 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+                            
                         </StackPanel>
                     </Border>
                     <StackPanel Classes="Content">
