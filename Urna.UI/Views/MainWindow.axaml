@@ -31,36 +31,62 @@
                             <ItemsControl ItemsSource="{Binding CargosLista}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/> 
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/> 
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Nome}" 
-                                                   Foreground="Black"
+                                        <TextBlock Text="{Binding Nome}"
+                                                   Classes="Cargos"
                                                    Background="{Binding Selecionado, 
-                                                   Converter={StaticResource SelecionadoParaBrush}}" />
+                                                   Converter={StaticResource SelecionadoParaBrush}}"
+                                                   Foreground="{Binding Selecionado, 
+                                                   Converter={StaticResource SelecionadoParaBrush},
+                                                   ConverterParameter=texto}"/>
                                     </DataTemplate> 
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            
-                            <ItemsControl ItemsSource="{Binding QuadradosVisuais}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/> 
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Classes="Quadrados">
-                                            <StackPanel >
-                                                <TextBlock Text="{Binding}"  Foreground="Black"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            
+                            <Grid ColumnDefinitions="*, * "
+                                  Margin="0,0,0,50">
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding CargoAtual}" 
+                                               Foreground="Black"/>
+                                    <ItemsControl ItemsSource="{Binding QuadradosVisuais}"
+                                                  VerticalAlignment="Bottom">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/> 
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Classes="Quadrados">
+                                                    <TextBlock Text="{Binding}"  Classes="NumerosQuadrados"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding EscolhidoNome}"
+                                                   Classes="Escolhido"/>
+                                        <TextBlock Text="{Binding EscolhidoPartido}"
+                                                   Classes="Escolhido"
+                                                   Height="60"
+                                                   Margin="0,0,0,30"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <Image Source="{Binding EscolhidoFoto}"
+                                       Grid.Column="1"
+                                       Width="175" Height="175"/>
+                            </Grid>
+                            <StackPanel HorizontalAlignment="Center" >
+                                <TextBlock Text="{Binding Aviso}" 
+                                           FontSize="24"
+                                           Foreground="Black"
+                                           />
+                                <TextBlock Text="{Binding AvisosMenores}"
+                                           Foreground="Black"/>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
                     <StackPanel Classes="Content">
@@ -100,11 +126,11 @@
                                     CommandParameter="0"/>
                         </Grid>
                         <StackPanel Classes="VoteButtonPanel">
-                            <Button Classes="VoteButtonBranco VoteButton" Content="Branco"
+                            <Button Classes="VoteButtonBranco VoteButton" Content="BRANCO"
                                     Command="{Binding BrancoCommand}"/>
-                            <Button Classes="VoteButtonCorrige VoteButton" Content="Corrige"
+                            <Button Classes="VoteButtonCorrige VoteButton" Content="CORRIGE"
                                     Command="{Binding CorrigeCommand}"/>
-                            <Button Classes="VoteButtonConfirma VoteButton" Content="Confirma"
+                            <Button Classes="VoteButtonConfirma VoteButton" Content="CONFIRMA"
                                     Command="{Binding ConfirmarVotoCommand}"/>
                         </StackPanel>
                     </StackPanel>

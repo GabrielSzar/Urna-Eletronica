@@ -5,6 +5,8 @@ using System.Globalization;
 using System.Linq;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Urna.UI.Models;
@@ -20,7 +22,6 @@ public partial class MainWindowViewModel : ViewModelBase
          new ("Senador", false, 3),
          new ("Governador", false, 2),
          new ("Presidente", false, 2)];
-    public IEnumerable<char> QuadradosVisuais => NumeroDigitado.PadRight(MaxDigitos, ' ');
     [ObservableProperty] 
     [NotifyPropertyChangedFor(nameof(QuadradosVisuais))]
     //Qunado IndiceCArgoAtual Mudar Atualize QuadrosVisuais
@@ -28,12 +29,25 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(QuadradosVisuais))]
     private string _numeroDigitado = string.Empty;
+    [ObservableProperty] private string? _aviso = string.Empty;
+    [ObservableProperty] private string? _avisosMenores = string.Empty;
+    public IEnumerable<char> QuadradosVisuais => 
+        NumeroDigitado.PadRight(MaxDigitos, ' ');
     private int MaxDigitos => CargosLista[IndiceCargoAtual].Digitos; 
     private string? CargoAtual => CargosLista[IndiceCargoAtual].Nome;
     private string _votoPrimeiroSenador = string.Empty;
+    private bool _branco = false;
+    
+    //Faltando pegar a lista de cantidatos do banco de dados, placeholdes abaixo
+    [ObservableProperty] private string? _escolhidoNome = "Lula";
+    [ObservableProperty] private string? _escolhidoPartido = "PT";
+    [ObservableProperty] private Bitmap _escolhidoFoto = new(AssetLoader.Open(new Uri("avares://Urna.UI/Assets/Img_Candidatos/lulaUrna.jpeg")));
     [RelayCommand]
     private void AdicionarNumero(string digito)
     {   
+        // Aparecer nome do cantidado, e partido na tela, com foto
+        // Quando o numero chegar no limite
+        Limpar();
         if (NumeroDigitado.Length >= MaxDigitos)
             return;
         NumeroDigitado += digito;
@@ -41,31 +55,48 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [RelayCommand]
     private void Branco()
-    {   
-        // Função de Aparecer para confirmar
-        AvancarVoto();
+    {
+        NumeroDigitado = string.Empty;
+        _branco = true;
+        Aviso = "VOTO EM BRANCO";
+        AvisosMenores = "CONFIRMA para CONFIRMAR este voto\n" +
+                        "CORRIGE para REINICIAR este voto";
     }
     [RelayCommand]
     private void Corrige()
     {
-        NumeroDigitado = string.Empty;      
+        NumeroDigitado = string.Empty;
+        Limpar();
     }
     [RelayCommand]
     private void ConfirmarVoto()
-    {
+    {   // Adicionar som de confirmar voto
+        if (_branco)
+        {
+            AvancarVoto();
+            _branco = false;
+            return;
+        }
         if (NumeroDigitado.Length != MaxDigitos) 
             return;
-        var numero = Convert.ToInt32(NumeroDigitado);
-        // var candidatos = _candidatoRepository.ListarPorCargo(CargoAtual);
-        // var tipo = _apuracaoService.ClassificarVoto(numero, candidatos,IdsEscolhidosNoCargoAtual);
-        // _candidatoRepository.RegistrarVoto(numero, tipo);
+        
+        if (NumeroDigitado != _votoPrimeiroSenador)
+        {   
+            // Convert.ToInt32(NumeroDigitado);
+            // CargoAtual
+            // numero e cargo vão para o banco de dados
+            // apenas se o seu número não for igual ao
+            // do senador anterior, aqui ‘string’.empty
+            // não cai porque voto branco retorna lá em cima
+        }
         AvancarVoto();
     }
 
     private void AvancarVoto()
-    {   // caso o voto seja o primeiro senador
-        _votoPrimeiroSenador = IndiceCargoAtual == 3 ? NumeroDigitado : string.Empty; 
-        if (IndiceCargoAtual > CargosLista.Count - 2)
+    {   // caso o voto seja o primeiro senador 
+        // [0] DeputadoFederal [1] DeputadoEstadual [2] Senador
+        _votoPrimeiroSenador = IndiceCargoAtual == 2 ? NumeroDigitado : string.Empty; 
+        if (IndiceCargoAtual >= CargosLista.Count - 1)
         {
             FimVotacao();
         }
@@ -75,11 +106,19 @@ public partial class MainWindowViewModel : ViewModelBase
         }  
         NumeroDigitado = string.Empty;
         CargoASerVotado();
+        Limpar();
     }
-    
 
-    private void FimVotacao()
+    private void Limpar()
     {
+        _branco = false;
+        Aviso = string.Empty;
+        AvisosMenores = string.Empty;
+    }
+    private void FimVotacao()
+    {   
+        // Adicionar som de fim de votação voto
+        // Chamar a contagem de votos
         IndiceCargoAtual = 0;
     }
 
@@ -103,6 +142,7 @@ public class SelecionadoParaBrushConverter : IValueConverter
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         bool selecionado = (bool)value!;
+        selecionado = (string)parameter! == "texto" ? !selecionado: selecionado;
         return selecionado ? Brushes.Black : Brushes.White;
     }
 
