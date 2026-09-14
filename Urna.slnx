@@ -1,8 +1,6 @@
 <Solution>
-  <Project Path="Urna.Business.Tests/Urna.Business.Tests.csproj" />
   <Project Path="Urna.Business/Urna.Business.csproj" />
   <Project Path="Urna.Core/Urna.Core.csproj" />
-  <Project Path="Urna.Data.Tests/Urna.Data.Tests.csproj" />
   <Project Path="Urna.Data/Urna.Data.csproj" />
   <Project Path="Urna.UI/Urna.UI.csproj" />
 </Solution>

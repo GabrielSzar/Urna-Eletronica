@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using Urna.Core.Database.Enums;
-using Urna.Core.Database.Interfaces;
-using Urna.Core.Database.Models;
+using Urna.Core.Enums;
+using Urna.Core.Interfaces;
+using Urna.Core.Models;
 using Urna.Data.Database;
 
 namespace Urna.Data.Repositories;
 
-public class CandidatoRepository : ICandidato
+public class CandidatoRepository : ICandidatoRepository
 {
     public List<CandidatoModel> ListarTodos()
     {

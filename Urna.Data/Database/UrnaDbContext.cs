@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Urna.Core.Database.Models;
+using Urna.Core.Models;
 
 namespace Urna.Data.Database;
 

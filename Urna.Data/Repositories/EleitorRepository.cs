@@ -1,10 +1,10 @@
-using TesteAvalonia.Core.Database.Interfaces;
-using Urna.Core.Database.Models;
+using Urna.Core.Interfaces;
+using Urna.Core.Models;
 using Urna.Data.Database;
 
 namespace Urna.Data.Repositories;
 
-public class EleitorRepository : IEleitor
+public class EleitorRepository : IEleitorRepository
 {
     public bool JaVotou(string cpf)
     {
