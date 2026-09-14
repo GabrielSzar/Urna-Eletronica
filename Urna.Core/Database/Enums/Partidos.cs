@@ -2,5 +2,16 @@ namespace Urna.Core.Database.Enums;
 
 public enum Partidos
 {
-    // Colocar os partidos
+    PT,
+    PL,
+    PSD,
+    PCO,
+    UP,
+    Novo,
+    PSTU,
+    PCB,
+    Missão,
+    Democrata,
+    DC,
+    Avante
 }
