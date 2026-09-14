@@ -5,9 +5,108 @@
             <!-- Add Controls for Previewer Here -->
         </Border>
     </Design.PreviewWith>
+    <Style Selector="Window.MainWindow">
+        <Setter Property="Width" Value="800"/>
+        <Setter Property="Height" Value="800"/>
+    </Style>
     <Style Selector="StackPanel.Body">
         <Setter Property="Background" Value="#EEEEE4"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
+    </Style>
+    <Style Selector="Button:pointerover /template/ ContentPresenter">
+        <!--RelativeSource = Origem relativa ao botao,
+            RelativeSource TemplatedParent = modelo pai, que nesse caso e o botao padrao-->
+        <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" />
+        <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}" />
+        <Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+        <Setter Property="Cursor" Value="hand"/>
+    </Style>
+    <Style Selector="Border.Border">
+        <Setter Property="Padding" Value="12"/>
+        <Setter Property="Margin" Value="12"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="CornerRadius" Value="8"/>
+    </Style>
+    <Style Selector="StackPanel.Viewer">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Width" Value="560"/>
+        <Setter Property="Height" Value="350"/>
+    </Style>
+    <Style Selector="Border.ViewerBorder">
+        <Setter Property="Padding" Value="12"/>
+        <Setter Property="Background" Value="Black"/>
+        <Setter Property="Width" Value="600"/>
+        <Setter Property="Height" Value="370"/>
+    </Style>
+    <Style Selector="StackPanel.Content">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Width" Value="600"/>
+        <Setter Property="Height" Value="300"/>
+    </Style>
+    <Style Selector="Image.IconJusticaEleitoral">
+        <Setter Property="Width" Value="300"/>
+        <Setter Property="Height" Value="150"/>
+    </Style>
+    <Style Selector="Grid.NumPadGrid">
+        <Setter Property="Column" Value="3"/>
+        <Setter Property="Row" Value="3"/>
+    </Style>
+    <Style Selector="Button.NumpadNum">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="#3D4E58"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="Margin" Value="6"/>
+        <Setter Property="Width" Value="57"/>
+        <Setter Property="Height" Value="46"/>
+    </Style>
+    <Style Selector="Button.VoteButtonPanel">
+    </Style>
+    <Style Selector="Button.VoteButton">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Margin" Value="6"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Width" Value="84"/>
+        <Setter Property="Height" Value="46"/>
+    </Style>
+    <Style Selector="Button.VoteButtonBranco">
+        <Setter Property="Background" Value="White"/>
+    </Style>
+    <Style Selector="Button.VoteButtonCorrige">
+        <Setter Property="Background" Value="OrangeRed"/>
+    </Style>
+    <Style Selector="Button.VoteButtonConfirma">
+        <Setter Property="Background" Value="#4DA94F"/>
+        <Setter Property="Height" Value="100"/>
+        <Setter Property="LetterSpacing" Value="-1"/>
+        <Setter Property="FontSize" Value="13"/>
+    </Style>
+    <Style Selector="Border.Quadrados">
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="Margin" Value="2"/>
+    </Style>
+    <Style Selector="TextBlock.NumerosQuadrados">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="MinWidth" Value="16"/>
+    </Style>
+    <Style Selector="TextBlock.Cargos">
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style Selector="TextBlock.Escolhido">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Padding" Value="4"/>
     </Style>
 </Styles>
