@@ -1,6 +1,6 @@
-using Urna.Core.Database.Enums;
+using Urna.Core.Enums;
 
-namespace Urna.Core.Database.Models;
+namespace Urna.Core.Models;
 
 public class CandidatoModel
 {

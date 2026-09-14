@@ -1,4 +1,4 @@
-namespace Urna.Core.Database.Enums;
+namespace Urna.Core.Enums;
 
 public enum Partidos
 {

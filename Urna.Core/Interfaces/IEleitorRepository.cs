@@ -1,8 +1,8 @@
-using Urna.Core.Database.Models;
+using Urna.Core.Models;
 
-namespace TesteAvalonia.Core.Database.Interfaces;
+namespace Urna.Core.Interfaces;
 
-public interface IEleitor
+public interface IEleitorRepository
 {
     bool JaVotou(string cpf);
     void MarcarComoVotado(string cpf);

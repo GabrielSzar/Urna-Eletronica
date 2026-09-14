@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Urna.Core.Database.Models;
-using Urna.Core.Database.Enums;
+using Urna.Core.Enums;
+using Urna.Core.Models;
 
 namespace Urna.Data.Database;
 
@@ -21,8 +21,8 @@ public class DatabaseInitializer
 
     private void AddCandidatos(UrnaDbContext context)
     {
-        CandidatoModel[] candidatos = new CandidatoModel[]
-        {
+        CandidatoModel[] candidatos =
+        [
             new CandidatoModel { Nome = "Luiz Inácio Lula da Silva", Cargo = "Presidente", Numero = 13, Partido = Partidos.PT, FotoCandidato = "assets/Img_Candidatos/lula.png" },
 
             new CandidatoModel { Nome = "Flávio Bolsonaro e Alfredo Gaspar", Cargo = "Presidente", Numero = 22, Partido = Partidos.PL, FotoCandidato = "assets/Img_Candidatos/flavio.png" },
@@ -45,8 +45,8 @@ public class DatabaseInitializer
 
             new CandidatoModel { Nome = "Samara Martins", Cargo = "Presidente", Numero = 80, Partido = Partidos.UP, FotoCandidato = "assets/Img_Candidatos/samara.png" },
 
-            new CandidatoModel { Nome = "Augusto Cury", Cargo = "Presidente", Numero = 70, Partido = Partidos.Avante, FotoCandidato = "assets/Img_Candidatos/cury.png" },
-        };
+            new CandidatoModel { Nome = "Augusto Cury", Cargo = "Presidente", Numero = 70, Partido = Partidos.Avante, FotoCandidato = "assets/Img_Candidatos/cury.png" }
+        ];
 
         context.Candidatos.AddRange(candidatos);
         context.SaveChanges();

@@ -1,9 +1,9 @@
-using Urna.Core.Database.Models;
-using Urna.Core.Database.Enums;
+using Urna.Core.Enums;
+using Urna.Core.Models;
 
-namespace Urna.Core.Database.Interfaces;
+namespace Urna.Core.Interfaces;
 
-public interface ICandidato
+public interface ICandidatoRepository
 {
     List<CandidatoModel> ListarTodos();
     CandidatoModel BuscarPorNumero(int numero);
