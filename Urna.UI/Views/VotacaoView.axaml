@@ -1,0 +1,132 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Urna.UI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:Urna.UI.Converters"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Urna.UI.Views.VotacaoView"
+        x:DataType="vm:VotacaoViewModel">
+    
+    <UserControl.Resources>
+        <converters:SelecionadoParaBrushConverter x:Key="SelecionadoParaBrush" />
+    </UserControl.Resources>
+    
+    <ScrollViewer>
+        <StackPanel Classes="Body">
+            <Border Classes="Border">
+                <StackPanel>
+                    <Border Classes="ViewerBorder">
+                        <StackPanel Classes="Viewer">
+                            
+                            <ItemsControl ItemsSource="{Binding CargosLista}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/> 
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Nome}"
+                                                   Classes="Cargos"
+                                                   Background="{Binding Selecionado, 
+                                                   Converter={StaticResource SelecionadoParaBrush}}"
+                                                   Foreground="{Binding Selecionado, 
+                                                   Converter={StaticResource SelecionadoParaBrush},
+                                                   ConverterParameter=texto}"/>
+                                    </DataTemplate> 
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Grid ColumnDefinitions="*, * "
+                                  Margin="0,0,0,50">
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding CargoAtual}" 
+                                               Foreground="Black"/>
+                                    <ItemsControl ItemsSource="{Binding QuadradosVisuais}"
+                                                  VerticalAlignment="Bottom">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/> 
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Classes="Quadrados">
+                                                    <TextBlock Text="{Binding}"  Classes="NumerosQuadrados"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding EscolhidoNome}"
+                                                   Classes="Escolhido"/>
+                                        <TextBlock Text="{Binding EscolhidoPartido}"
+                                                   Classes="Escolhido"
+                                                   Height="60"
+                                                   Margin="0,0,0,30"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <Image Source="{Binding EscolhidoFoto}"
+                                       Grid.Column="1"
+                                       Width="175" Height="175"/>
+                            </Grid>
+                            <StackPanel HorizontalAlignment="Center" >
+                                <TextBlock Text="{Binding Aviso}" 
+                                           FontSize="24"
+                                           Foreground="Black"
+                                           />
+                                <TextBlock Text="{Binding AvisosMenores}"
+                                           Foreground="Black"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <StackPanel Classes="Content">
+                        <Image Source="../Assets/JusEl.png" Classes="IconJusticaEleitoral"/>
+                        <Grid Classes="NumPadGrid"
+                              RowDefinitions="Auto,Auto,Auto,Auto"
+                              ColumnDefinitions="Auto,Auto,Auto">
+                            <Button Content="1" Grid.Row="0" Grid.Column="0" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="1"/>
+                            <Button Content="2" Grid.Row="0" Grid.Column="1" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="2"/>
+                            <Button Content="3" Grid.Row="0" Grid.Column="2" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="3"/>
+                            <Button Content="4" Grid.Row="1" Grid.Column="0" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="4"/>
+                            <Button Content="5" Grid.Row="1" Grid.Column="1" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="5"/>
+                            <Button Content="6" Grid.Row="1" Grid.Column="2" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="6"/>
+                            <Button Content="7" Grid.Row="2" Grid.Column="0" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="7"/>
+                            <Button Content="8" Grid.Row="2" Grid.Column="1" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="8"/>
+                            <Button Content="9" Grid.Row="2" Grid.Column="2" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="9"/>
+                            <Button Content="0" Grid.Row="3" Grid.Column="1" Classes="NumpadNum" 
+                                    Command="{Binding AdicionarNumeroCommand}" 
+                                    CommandParameter="0"/>
+                        </Grid>
+                        <StackPanel Classes="VoteButtonPanel">
+                            <Button Classes="VoteButtonBranco VoteButton" Content="BRANCO"
+                                    Command="{Binding BrancoCommand}"/>
+                            <Button Classes="VoteButtonCorrige VoteButton" Content="CORRIGE"
+                                    Command="{Binding CorrigeCommand}"/>
+                            <Button Classes="VoteButtonConfirma VoteButton" Content="CONFIRMA"
+                                    Command="{Binding ConfirmarVotoCommand}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
