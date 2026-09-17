@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Urna.UI.Views;
 
-public partial class MainWindow : Window
+public partial class VotacaoView : UserControl
 {
-    public MainWindow()
+    public VotacaoView()
     {
         InitializeComponent();
     }
