@@ -8,6 +8,7 @@ using Avalonia.Platform;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Urna.Core.Interfaces;
+using Urna.Core.Models;
 using Urna.UI.Models;
 using Urna.UI.Services;
 
@@ -31,7 +32,6 @@ public partial class VotacaoViewModel : ViewModelBase
         _navigationService = navigationService;
         _resultadoViewModel = resultadoViewModel;
     }
-
     [ObservableProperty] private ObservableCollection<Cargo> _cargosLista = 
         [new ("DeputadoFederal", true, 4), 
          new ("DeputadoEstadual", false, 5),
@@ -53,19 +53,34 @@ public partial class VotacaoViewModel : ViewModelBase
     private string? CargoAtual => CargosLista[IndiceCargoAtual].Nome;
     private string _votoPrimeiroSenador = string.Empty;
     private bool _branco = false;
+    private bool _nulo = false;
     //Faltando pegar a lista de cantidatos do banco de dados, placeholdes abaixo
-    [ObservableProperty] private string? _escolhidoNome = "Lula";
-    [ObservableProperty] private string? _escolhidoPartido = "PT";
-    [ObservableProperty] private Bitmap _escolhidoFoto = new(AssetLoader.Open(new Uri("avares://Urna.UI/Assets/Img_Candidatos/lulaUrna.jpeg")));
+    [ObservableProperty] private string? _escolhidoNome = string.Empty;
+    [ObservableProperty] private string? _escolhidoPartido = string.Empty;
+    [ObservableProperty] private Bitmap _escolhidoFoto;
     [RelayCommand]
     private void AdicionarNumero(string digito)
     {   
-        // Aparecer nome do cantidado, e partido na tela, com foto
-        // Quando o numero chegar no limite
         Limpar();
         if (NumeroDigitado.Length >= MaxDigitos)
+        {   
             return;
+        }
         NumeroDigitado += digito;
+        if (NumeroDigitado.Length == MaxDigitos)
+        {
+            var candidadosLista = _candidatoRepository.ListarTodos();
+            var candidato = candidadosLista.FirstOrDefault(c => c.Numero == Convert.ToInt32(NumeroDigitado) && c.Cargo == CargoAtual);
+            if ( candidato == null)
+            {   
+                _nulo = true;
+                return;
+            }
+            EscolhidoNome = candidato.Nome;
+            EscolhidoPartido = candidato.Partido.ToString();
+            EscolhidoFoto = new Bitmap(AssetLoader.Open(new Uri($"avares://{candidato.FotoCandidato}")));
+
+        }
     }
 
     [RelayCommand]
@@ -132,8 +147,13 @@ public partial class VotacaoViewModel : ViewModelBase
     private void Limpar()
     {
         _branco = false;
+        _nulo = false;
+        EscolhidoPartido = string.Empty;
+        EscolhidoFoto = null;
+        EscolhidoPartido = string.Empty;
         Aviso = string.Empty;
         AvisosMenores = string.Empty;
+        
     }
     private async Task FimVotacao()
     {   
@@ -141,6 +161,7 @@ public partial class VotacaoViewModel : ViewModelBase
         await _audioService.TocarAudio("Fim");
         // Adicionar som de fim de votação voto
         // Chamar a contagem de votos
+        Limpar();
         IndiceCargoAtual = 0;
     }
 

@@ -8,6 +8,7 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using Urna.Business;
 using Urna.Core.Interfaces;
+using Urna.Data.Database;
 using Urna.Data.Repositories;
 using Urna.UI.Services;
 using Urna.UI.ViewModels;
@@ -37,7 +38,8 @@ public partial class App : Application
         var provider = services.BuildServiceProvider();
         
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
+        {   
+            new DatabaseInitializer().Initializer();
             var mainWindowViewModel = provider.GetRequiredService<MainWindowViewModel>();
             mainWindowViewModel.CurrentViewModel = provider.GetRequiredService<IdentificacaoViewModel>();
             desktop.MainWindow = new MainWindow { DataContext = mainWindowViewModel };
