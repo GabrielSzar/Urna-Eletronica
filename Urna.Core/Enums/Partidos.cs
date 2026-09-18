@@ -13,5 +13,6 @@ public enum Partidos
     Missão,
     Democrata,
     DC,
-    Avante
+    Avante,
+    SemPartido
 }

@@ -78,7 +78,7 @@ public partial class VotacaoViewModel : ViewModelBase
             }
             EscolhidoNome = candidato.Nome;
             EscolhidoPartido = candidato.Partido.ToString();
-            EscolhidoFoto = new Bitmap(AssetLoader.Open(new Uri($"avares://{candidato.FotoCandidato}")));
+            EscolhidoFoto = new Bitmap(AssetLoader.Open(new Uri($"avares://Urna.UI/{candidato.FotoCandidato}")));
 
         }
     }
@@ -106,7 +106,8 @@ public partial class VotacaoViewModel : ViewModelBase
     private async Task ConfirmarVoto()
     {
         if (_branco)
-        {
+        {   
+            await _audioService.TocarAudio("Confirmar");
             await AvancarVoto();
             _branco = false;
             return;
@@ -148,8 +149,8 @@ public partial class VotacaoViewModel : ViewModelBase
     {
         _branco = false;
         _nulo = false;
-        EscolhidoNome = string.Empty;
         EscolhidoFoto = null;
+        EscolhidoNome = string.Empty;
         EscolhidoPartido = string.Empty;
         Aviso = string.Empty;
         AvisosMenores = string.Empty;
