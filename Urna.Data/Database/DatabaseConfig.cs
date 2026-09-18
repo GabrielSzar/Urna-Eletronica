@@ -7,7 +7,7 @@ public class DatabaseConfig
     public static string GetConnString()
     {
         IConfiguration config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetParent(Directory.GetCurrentDirectory()).FullName)
+            .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json")
             .Build();
 
