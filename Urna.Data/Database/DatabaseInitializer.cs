@@ -34,7 +34,11 @@ public class DatabaseInitializer
             new CandidatoModel { Nome = "Veterinário Wilson Grassi", Cargo = "Presidente", Numero = 35, Partido = Partidos.Democrata, FotoCandidato = "Assets/Img_Candidatos/wilson.png" },
             new CandidatoModel { Nome = "Ronaldo Caiado", Cargo = "Presidente", Numero = 55, Partido = Partidos.PSD, FotoCandidato = "Assets/Img_Candidatos/ronaldo.png" },
             new CandidatoModel { Nome = "Samara Martins", Cargo = "Presidente", Numero = 80, Partido = Partidos.UP, FotoCandidato = "Assets/Img_Candidatos/samara.png" },
-            new CandidatoModel { Nome = "Augusto Cury", Cargo = "Presidente", Numero = 70, Partido = Partidos.Avante, FotoCandidato = "Assets/Img_Candidatos/cury.png" }
+            new CandidatoModel { Nome = "Augusto Cury", Cargo = "Presidente", Numero = 70, Partido = Partidos.Avante, FotoCandidato = "Assets/Img_Candidatos/cury.png" },
+            new CandidatoModel { Nome = "Nulo", Cargo = "Presidente", Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/nulo.png"},
+            new CandidatoModel { Nome = "Branco", Cargo = "Presidente", Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/branco.png"},
+            new CandidatoModel { Nome = "Tung Tung Tung Sahur God", Cargo = "Presidente", Numero = 76, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/branco.png"},
+            new CandidatoModel { Nome = "67 Kid", Cargo = "Presidente", Numero = 67, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/nulo.png"}
         ];
 
         context.Candidatos.AddRange(candidatos);
