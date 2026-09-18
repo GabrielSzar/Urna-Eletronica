@@ -47,6 +47,9 @@ public partial class VotacaoViewModel : ViewModelBase
     private string _numeroDigitado = string.Empty;
     [ObservableProperty] private string? _aviso = string.Empty;
     [ObservableProperty] private string? _avisosMenores = string.Empty;
+    [ObservableProperty] private string? _escolhidoNome = string.Empty;
+    [ObservableProperty] private string? _escolhidoPartido = string.Empty;
+    [ObservableProperty] private Bitmap _escolhidoFoto;
     public IEnumerable<char> QuadradosVisuais => 
         NumeroDigitado.PadRight(MaxDigitos, ' ');
     private int MaxDigitos => CargosLista[IndiceCargoAtual].Digitos; 
@@ -54,10 +57,7 @@ public partial class VotacaoViewModel : ViewModelBase
     private string _votoPrimeiroSenador = string.Empty;
     private bool _branco = false;
     private bool _nulo = false;
-    //Faltando pegar a lista de cantidatos do banco de dados, placeholdes abaixo
-    [ObservableProperty] private string? _escolhidoNome = string.Empty;
-    [ObservableProperty] private string? _escolhidoPartido = string.Empty;
-    [ObservableProperty] private Bitmap _escolhidoFoto;
+    
     [RelayCommand]
     private void AdicionarNumero(string digito)
     {   
@@ -104,7 +104,7 @@ public partial class VotacaoViewModel : ViewModelBase
     }
     [RelayCommand]
     private async Task ConfirmarVoto()
-    {   // Adicionar som de confirmar voto
+    {
         if (_branco)
         {
             await AvancarVoto();
@@ -148,7 +148,7 @@ public partial class VotacaoViewModel : ViewModelBase
     {
         _branco = false;
         _nulo = false;
-        EscolhidoPartido = string.Empty;
+        EscolhidoNome = string.Empty;
         EscolhidoFoto = null;
         EscolhidoPartido = string.Empty;
         Aviso = string.Empty;
