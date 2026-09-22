@@ -7,7 +7,7 @@ public class UrnaDbContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite(DatabaseConfig.GetConnString());
+        optionsBuilder.UseSqlite("Data Source=UrnaBanco.db");
     }
 
     public DbSet<EleitorModel> Eleitors { get; set; }
