@@ -39,7 +39,7 @@ public class CsvHandler
         return Partidos.SemPartido;
     }
     public static IEnumerable<CandidatoModel> LerCandidatos(string nomeArquivo, string prefixoUf, Func<string, bool> filtroCargo)
-    {
+    {   // Gustavo Galassi SQ_CANDIDATO: 130002553354 não esta se candidatando mais, linha morta so csv, mas não afeta o funcionamento
         var caminho = Path.Combine(AppContext.BaseDirectory, "Data", nomeArquivo);
         using var reader = new StreamReader(caminho, Encoding.Latin1);
         using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture) { Delimiter = ";" });
