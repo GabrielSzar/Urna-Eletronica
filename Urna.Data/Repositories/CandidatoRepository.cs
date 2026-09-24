@@ -16,47 +16,27 @@ public class CandidatoRepository : ICandidatoRepository
         }
     }
 
-    public CandidatoModel BuscarPorNumero(int numero)
+    public CandidatoModel? BuscarPorNumero(int numero)
     {
-        CandidatoModel candidatoModel = new CandidatoModel()
-        {
-            Id = 0
-        };
-
         using (var context = new UrnaDbContext())
         {
             return context.Candidatos.FirstOrDefault(candidato => candidato.Numero == numero)
-                ?? candidatoModel;
+                ?? null;
         }
     }
 
-    public void RegistrarVoto(int candidatoId, TipoVoto tipo)
-    {
-        if (tipo == TipoVoto.Branco)
-        {
-            using (var context = new UrnaDbContext())
-            {
-                var maisVotado = context.Candidatos.OrderByDescending(candidato => candidato.NumVotos).First();
-                
-                maisVotado.NumVotos++;
-                
-                context.SaveChanges();
-            }
-
-            return;
-        }
-
-        if (tipo == TipoVoto.Nulo)
-        {
-            return;
-        }
-
+    public void RegistrarVoto(int candidatoId)
+    {   // Removi o TipoVoto, porque o VotacaoViewModel já precisa saber o tipo do voto
+        // para mostrar o alerta "Voto Branco" "Voto Nulo" para o usuario
         using (var context = new UrnaDbContext())
         {
-            CandidatoModel candidato = context.Candidatos.Find(candidatoId);
-
+            var candidato = context.Candidatos.Find(candidatoId);
+            if (candidato == null)
+            {   
+                Console.WriteLine($"Canditado ID {candidatoId} não encontrado");
+                return;
+            }
             candidato.NumVotos++;
-
             context.SaveChanges();
         }
     }

@@ -21,7 +21,7 @@ public class DatabaseInitializer
 
     private void AddCandidatos(UrnaDbContext context)
     {
-        CandidatoModel[] candidatos =
+        CandidatoModel[] candidatosPresidente =
         [
             new CandidatoModel { Nome = "Luiz Inácio Lula da Silva", Cargo = "Presidente", Numero = 13, Partido = Partidos.PT, FotoCandidato = "Assets/Img_Candidatos/lula.png" },
             new CandidatoModel { Nome = "Flávio Bolsonaro e Alfredo Gaspar", Cargo = "Presidente", Numero = 22, Partido = Partidos.PL, FotoCandidato = "Assets/Img_Candidatos/flavio.png" },
@@ -40,8 +40,31 @@ public class DatabaseInitializer
             new CandidatoModel { Nome = "Tung Tung Tung Sahur God", Cargo = "Presidente", Numero = 76, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/branco.png"},
             new CandidatoModel { Nome = "67 Kid", Cargo = "Presidente", Numero = 67, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/nulo.png"}
         ];
-
-        context.Candidatos.AddRange(candidatos);
+        CandidatoModel[] candidatosGovernador =
+        [   
+            new CandidatoModel { Nome = "Nulo", Cargo = "Governador", Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/nulo.png"},
+            new CandidatoModel { Nome = "Branco", Cargo = "Governador", Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/branco.png"},
+        ];
+        CandidatoModel[] candidatosSenador =
+        [   
+            new CandidatoModel { Nome = "Nulo", Cargo = "Senador", Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/nulo.png"},
+            new CandidatoModel { Nome = "Branco", Cargo = "Senador", Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/branco.png"},
+        ];
+        CandidatoModel[] candidatosDpEstadual =
+        [   
+            new CandidatoModel { Nome = "Nulo", Cargo = "DeputadoEstadual", Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/nulo.png"},
+            new CandidatoModel { Nome = "Branco", Cargo = "DeputadoEstadual", Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/branco.png"},
+        ];
+        CandidatoModel[] candidatosDpFederal =
+        [   
+            new CandidatoModel { Nome = "Nulo", Cargo = "DeputadoFederal", Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/nulo.png"},
+            new CandidatoModel { Nome = "Branco", Cargo = "DeputadoFederal", Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = "Assets/Img_Candidatos/branco.png"},
+        ];
+        context.Candidatos.AddRange(candidatosPresidente);
+        context.Candidatos.AddRange(candidatosGovernador);
+        context.Candidatos.AddRange(candidatosSenador);
+        context.Candidatos.AddRange(candidatosDpFederal);
+        context.Candidatos.AddRange(candidatosDpEstadual);
         context.SaveChanges();
     }
 }

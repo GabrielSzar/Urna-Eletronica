@@ -6,6 +6,6 @@ namespace Urna.Core.Interfaces;
 public interface ICandidatoRepository
 {
     List<CandidatoModel> ListarTodos();
-    CandidatoModel BuscarPorNumero(int numero);
-    void RegistrarVoto(int candidatoId, TipoVoto tipo);
+    CandidatoModel? BuscarPorNumero(int numero);
+    void RegistrarVoto(int candidatoId);
 }
