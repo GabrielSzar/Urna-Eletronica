@@ -11,6 +11,10 @@
              
     <Application.Styles>
          <FluentTheme />
-         <StyleInclude Source="avares://Urna.UI/Styles/MainWindowStyle.axaml" />
+         <StyleInclude Source="avares://Urna.UI/Styles/MainWindowStyles.axaml" />
+         <StyleInclude Source="avares://Urna.UI/Styles/IdentificacaoStyles.axaml" />
+         <StyleInclude Source="avares://Urna.UI/Styles/VotacaoStyles.axaml" />
+         <StyleInclude Source="avares://Urna.UI/Styles/ResultadoStyles.axaml" />
+         <StyleInclude Source="avares://Urna.UI/Styles/ApuracaoStyles.axaml" />
     </Application.Styles>
 </Application>

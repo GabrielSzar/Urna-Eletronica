@@ -1,28 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Design.PreviewWith>
-        <Border Padding="20">
-            <!-- Add Controls for Previewer Here -->
-        </Border>
-    </Design.PreviewWith>
-    <Style Selector="Window.MainWindow">
-        <Setter Property="Width" Value="800"/>
-        <Setter Property="Height" Value="800"/>
-    </Style>
-    <Style Selector="StackPanel.Body">
-        <Setter Property="Background" Value="#EEEEE4"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="VerticalAlignment" Value="Stretch"/>
-    </Style>
-    <Style Selector="Button:pointerover /template/ ContentPresenter">
-        <!--RelativeSource = Origem relativa ao botao,
-            RelativeSource TemplatedParent = modelo pai, que nesse caso e o botao padrao-->
-        <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" />
-        <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}" />
-        <Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
-        <Setter Property="Cursor" Value="hand"/>
-    </Style>
-    <Style Selector="Border.Border">
+<Style Selector="Border.Border">
         <Setter Property="Padding" Value="12"/>
         <Setter Property="Margin" Value="12"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -109,4 +87,5 @@
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Padding" Value="4"/>
     </Style>
+    
 </Styles>

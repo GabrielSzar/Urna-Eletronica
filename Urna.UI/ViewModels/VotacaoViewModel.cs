@@ -17,20 +17,14 @@ namespace Urna.UI.ViewModels;
 public partial class VotacaoViewModel : ViewModelBase
 {   
     private readonly ICandidatoRepository _candidatoRepository;
-    private readonly IEleitorRepository _eleitorRepository;
-    private readonly IApuracaoService _apuracaoService;
     private readonly IAudioService _audioService;
     private readonly INavigationService _navigationService;
-    private readonly ResultadoViewModel _resultadoViewModel;
     
-    public VotacaoViewModel(ICandidatoRepository candidatoRepository, IEleitorRepository eleitorRepository, IApuracaoService apuracaoService, IAudioService audioService, INavigationService navigationService, ResultadoViewModel resultadoViewModel)
+    public VotacaoViewModel(ICandidatoRepository candidatoRepository, IAudioService audioService, INavigationService navigationService)
     {
         _candidatoRepository = candidatoRepository;
-        _eleitorRepository = eleitorRepository;
-        _apuracaoService = apuracaoService;
         _audioService = audioService;
         _navigationService = navigationService;
-        _resultadoViewModel = resultadoViewModel;
     }
     [ObservableProperty] private ObservableCollection<Cargo> _cargosLista = 
         [new ("DeputadoFederal", true, 4), 
@@ -49,12 +43,13 @@ public partial class VotacaoViewModel : ViewModelBase
     [ObservableProperty] private string? _avisosMenores = string.Empty;
     [ObservableProperty] private string? _escolhidoNome = string.Empty;
     [ObservableProperty] private string? _escolhidoPartido = string.Empty;
-    [ObservableProperty] private Bitmap _escolhidoFoto;
+    [ObservableProperty] private Bitmap? _escolhidoFoto = null;
     public IEnumerable<char> QuadradosVisuais => 
         NumeroDigitado.PadRight(MaxDigitos, ' ');
     private int MaxDigitos => CargosLista[IndiceCargoAtual].Digitos; 
     private string? CargoAtual => CargosLista[IndiceCargoAtual].Nome;
     private string _votoPrimeiroSenador = string.Empty;
+    private CandidatoModel? _candidatoEscolhido = new CandidatoModel();
     private bool _branco = false;
     private bool _nulo = false;
     
@@ -64,18 +59,31 @@ public partial class VotacaoViewModel : ViewModelBase
         Limpar();
         if (NumeroDigitado.Length >= MaxDigitos)
         {   
+            Aviso = "VOTO NULO";
+            AvisosMenores = "CONFIRMA para CONFIRMAR este voto\n" +
+                            "CORRIGE para REINICIAR este voto";
             return;
         }
         NumeroDigitado += digito;
         if (NumeroDigitado.Length == MaxDigitos)
         {
-            var candidadosLista = _candidatoRepository.ListarTodos();
-            var candidato = candidadosLista.FirstOrDefault(c => c.Numero == Convert.ToInt32(NumeroDigitado) && c.Cargo == CargoAtual);
+            var candidatosLista = _candidatoRepository.ListarTodos();
+            var candidato = candidatosLista.FirstOrDefault(c => c.Numero == Convert.ToInt32(NumeroDigitado) && c.Cargo == CargoAtual);
             if ( candidato == null)
-            {   
+            {
+                _candidatoEscolhido = candidatosLista.FirstOrDefault(c => c.Nome == "Nulo" && c.Cargo == CargoAtual);
+                if (_candidatoEscolhido == null)
+                {
+                    Console.WriteLine($"Candidato NULO não encontrado, Cargo: {CargoAtual}");
+                }
                 _nulo = true;
+                Aviso = "VOTO NULO";
+                AvisosMenores = "CONFIRMA para CONFIRMAR este voto\n" +
+                                "CORRIGE para REINICIAR este voto";
                 return;
             }
+
+            _candidatoEscolhido = candidato;
             EscolhidoNome = candidato.Nome;
             EscolhidoPartido = candidato.Partido.ToString();
             EscolhidoFoto = new Bitmap(AssetLoader.Open(new Uri($"avares://Urna.UI/{candidato.FotoCandidato}")));
@@ -104,9 +112,13 @@ public partial class VotacaoViewModel : ViewModelBase
     }
     [RelayCommand]
     private async Task ConfirmarVoto()
-    {
+    {   
+        var candidatosLista = _candidatoRepository.ListarTodos();
         if (_branco)
         {   
+            _candidatoEscolhido = candidatosLista.First(c => c.Nome == "Branco" && c.Cargo == CargoAtual);
+            Console.WriteLine($"Adicionando Canditado {_candidatoEscolhido.Id}, {_candidatoEscolhido.Nome}, {_candidatoEscolhido.Cargo} {_candidatoEscolhido.NumVotos}, {_candidatoEscolhido.Partido} {_candidatoEscolhido.Partido}");
+            _candidatoRepository.RegistrarVoto(_candidatoEscolhido.Id);
             await _audioService.TocarAudio("Confirmar");
             await AvancarVoto();
             _branco = false;
@@ -117,13 +129,14 @@ public partial class VotacaoViewModel : ViewModelBase
         
         if (NumeroDigitado != _votoPrimeiroSenador)
         {   
+            Console.WriteLine($"Adicionando Canditado ID: {_candidatoEscolhido.Id}" +
+                              $"\nNome: {_candidatoEscolhido.Nome}" +
+                              $"\nCargo:  {_candidatoEscolhido.Cargo}" +
+                              $"\nNumero de Votos: {_candidatoEscolhido.NumVotos}" +
+                              $"\nPartido {_candidatoEscolhido.Partido}" +
+                              $"\nNumero: {_candidatoEscolhido.Numero}\n");
+            _candidatoRepository.RegistrarVoto(_candidatoEscolhido.Id); // Adiciona no Banco
             await _audioService.TocarAudio("Confirmar");
-            // Convert.ToInt32(NumeroDigitado);
-            // CargoAtual
-            // numero e cargo vão para o banco de dados
-            // apenas se o seu número não for igual ao
-            // do senador anterior, aqui ‘string’.empty
-            // não cai porque voto branco retorna lá em cima
         }
         await AvancarVoto();
     }
@@ -160,8 +173,7 @@ public partial class VotacaoViewModel : ViewModelBase
     {   
         
         await _audioService.TocarAudio("Fim");
-        // Adicionar som de fim de votação voto
-        // Chamar a contagem de votos
+        _navigationService.NavigateTo<ResultadoViewModel>();
         Limpar();
         IndiceCargoAtual = 0;
     }

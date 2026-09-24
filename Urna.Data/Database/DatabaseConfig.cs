@@ -5,12 +5,9 @@ namespace Urna.Data.Database;
 public class DatabaseConfig
 {
     public static string GetConnString()
-    {
-        IConfiguration config = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json")
-            .Build();
-
-        return config.GetConnectionString("Default") ?? string.Empty;
+    {   // Removi o appsettigns.json porque tava dando muito erro de pegar o caminho do banco
+        // e tava criando varios arquivos diferentes
+        var caminhoAbsoluto = Path.Combine(AppContext.BaseDirectory, "UrnaBanco.db");
+        return $"Data Source={caminhoAbsoluto}";
     }
 }
