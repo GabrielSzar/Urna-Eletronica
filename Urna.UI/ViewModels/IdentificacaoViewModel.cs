@@ -7,15 +7,14 @@ namespace Urna.UI.ViewModels;
 
 public partial class IdentificacaoViewModel : ViewModelBase
 {
-    [ObservableProperty] public string mensagemMatricula = string.Empty;
-    [ObservableProperty] public IBrush corMensagemMatricula = Brushes.Transparent;
     private readonly INavigationService _navigationService;
 
     public IdentificacaoViewModel(INavigationService navigationService, VotacaoViewModel votacaoViewModel)
     {
         _navigationService = navigationService;
     }
-
+    [ObservableProperty] public string mensagemMatricula = string.Empty;
+    [ObservableProperty] public IBrush corMensagemMatricula = Brushes.Transparent;
     [RelayCommand]
     public void ValidarMatricula(string matricula)
     {
