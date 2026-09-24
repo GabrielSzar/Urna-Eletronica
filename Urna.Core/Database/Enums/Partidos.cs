@@ -6,12 +6,14 @@ public enum Partidos
     PL,
     PSD,
     PCO,
+    PRTB,
+    PSB,
     UP,
-    Novo,
+    NOVO,
     PSTU,
     PCB,
-    Missão,
-    Democrata,
+    MISSAO,
+    DEMOCRATA,
     DC,
-    Avante
+    AVANTE
 }
