@@ -6,8 +6,57 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:DataType="vm:IdentificacaoViewModel"
         x:Class="Urna.UI.Views.IdentificacaoView">
-        <StackPanel>
-                <Button Content="Verificar"
-                        Command="{Binding VerificarMatriculaCommand}"/>
+    
+    <UserControl>
+        <UserControl.Styles>
+            <Style Selector="Button.ClasseTeste:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="#38464c" />
+                <Setter Property="Foreground" Value="White" />
+            </Style>
+        
+            <Style Selector="TextBox.ClasseTeste:focus /template/ Border#PART_BorderElement">
+                <Setter Property="Background" Value="DimGray" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>
+        </UserControl.Styles>
+        
+        <UserControl.Background>
+            <!-- <ImageBrush Source="avares://Urna.UI/Assets/BackgroundLogin.png" -->
+            <!--             Stretch="Uniform"/> -->
+            <SolidColorBrush Color="#edefe4"></SolidColorBrush>
+        </UserControl.Background>
+        
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            
+            <TextBox Name="Matricula"
+                     Classes="ClasseTeste"
+                     Background="DarkGray"
+                     PlaceholderText="Matricula"
+                     HorizontalAlignment="Center"
+                     Width="150"
+                     HorizontalContentAlignment="Center"
+                     CornerRadius="7"
+                     BorderBrush="Transparent"/>
+            
+            <Button Classes="ClasseTeste"
+                    Foreground="White"
+                    Background="#415158"
+                    Margin="0, 10"
+                    CornerRadius="7"
+                    Width="150"
+                    Height="36"
+                    Content="Enviar"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Command="{Binding ValidarMatriculaCommand}"
+                    CommandParameter="{Binding #Matricula.Text}"/>
+            
+            <TextBlock Text="{Binding MensagemMatricula}"
+                       Foreground="{Binding CorMensagemMatricula}"
+                       HorizontalAlignment="Center"/>
+            
         </StackPanel>
+    </UserControl>
 </UserControl>
