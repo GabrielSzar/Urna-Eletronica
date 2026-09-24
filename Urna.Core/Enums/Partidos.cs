@@ -2,17 +2,7 @@ namespace Urna.Core.Enums;
 
 public enum Partidos
 {
-    PT,
-    PL,
-    PSD,
-    PCO,
-    UP,
-    Novo,
-    PSTU,
-    PCB,
-    Missão,
-    Democrata,
-    DC,
-    Avante,
-    SemPartido
+    SemPartido, AGIR, AVANTE, CIDADANIA, DC, DEMOCRATA, MDB, MISSAO, MOBILIZA, NOVO,
+    PCB, PCDOB, PCO, PDT, PL, PODE, PP, PRD, PRTB, PSB, PSD, PSDB, PSOL, PSTU, PT,
+    PV, REDE, REPUBLICANOS, SOLIDARIEDADE, UNIAO, UP
 }
