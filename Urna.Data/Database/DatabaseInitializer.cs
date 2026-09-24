@@ -28,8 +28,8 @@ public class DatabaseInitializer
 
         foreach (var cargo in candidatos.Select(c => c.Cargo).Distinct().ToList())
         {
-            candidatos.Add(new CandidatoModel { Nome = "Branco", Cargo = cargo, Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = $"Assets/Img_Candidatos/{cargo}/branco.jpg" });
-            candidatos.Add(new CandidatoModel { Nome = "Nulo", Cargo = cargo, Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = $"Assets/Img_Candidatos/{cargo}/nulo.jpg" });
+            candidatos.Add(new CandidatoModel { Nome = "Branco", Cargo = cargo, Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = $"Assets/Img_Candidatos/branco.jpg" });
+            candidatos.Add(new CandidatoModel { Nome = "Nulo", Cargo = cargo, Numero = -1, Partido = Partidos.SemPartido, FotoCandidato = $"Assets/Img_Candidatos/nulo.jpg" });
         }
 
         context.Candidatos.AddRange(candidatos);
