@@ -7,7 +7,7 @@ UrnaEletronica/Igor
 # dotenv files
 .env
 # Arquivos criados automaticamente
-urna.db
+*.db
 
 # dotenv files
 .env
