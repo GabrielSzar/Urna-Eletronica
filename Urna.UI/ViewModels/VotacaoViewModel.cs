@@ -71,11 +71,6 @@ public partial class VotacaoViewModel : ViewModelBase
             var candidato = candidatosLista.FirstOrDefault(c => c.Numero == Convert.ToInt32(NumeroDigitado) && c.Cargo == CargoAtual);
             if ( candidato == null)
             {
-                _candidatoEscolhido = candidatosLista.FirstOrDefault(c => c.Nome == "Nulo" && c.Cargo == CargoAtual);
-                if (_candidatoEscolhido == null)
-                {
-                    Console.WriteLine($"Candidato NULO não encontrado, Cargo: {CargoAtual}");
-                }
                 _nulo = true;
                 Aviso = "VOTO NULO";
                 AvisosMenores = "CONFIRMA para CONFIRMAR este voto\n" +
@@ -117,24 +112,31 @@ public partial class VotacaoViewModel : ViewModelBase
         if (_branco)
         {   
             _candidatoEscolhido = candidatosLista.First(c => c.Nome == "Branco" && c.Cargo == CargoAtual);
-            Console.WriteLine($"Adicionando Canditado {_candidatoEscolhido.Id}, {_candidatoEscolhido.Nome}, {_candidatoEscolhido.Cargo} {_candidatoEscolhido.NumVotos}, {_candidatoEscolhido.Partido} {_candidatoEscolhido.Partido}");
-            _candidatoRepository.RegistrarVoto(_candidatoEscolhido.Id);
-            await _audioService.TocarAudio("Confirmar");
-            await AvancarVoto();
-            _branco = false;
+            Console.WriteLine("É Branco");
+        }
+
+        if (_nulo)
+        {   
+            _candidatoEscolhido = candidatosLista.First(c => c.Nome == "Nulo" && c.Cargo == CargoAtual);
+            Console.WriteLine("É Nulo");
+        }
+        
+        if (NumeroDigitado.Length != MaxDigitos && !_nulo && !_branco)
+        {   
+            Console.WriteLine("Retornou");
             return;
         }
-        if (NumeroDigitado.Length != MaxDigitos) 
-            return;
         
-        if (NumeroDigitado != _votoPrimeiroSenador)
+        if (NumeroDigitado != _votoPrimeiroSenador || _nulo || _branco)
         {   
-            Console.WriteLine($"Adicionando Canditado ID: {_candidatoEscolhido.Id}" +
-                              $"\nNome: {_candidatoEscolhido.Nome}" +
-                              $"\nCargo:  {_candidatoEscolhido.Cargo}" +
-                              $"\nNumero de Votos: {_candidatoEscolhido.NumVotos}" +
-                              $"\nPartido {_candidatoEscolhido.Partido}" +
-                              $"\nNumero: {_candidatoEscolhido.Numero}\n");
+            Console.WriteLine($"""
+                               Adicionando Canditado ID: {_candidatoEscolhido.Id}
+                               Nome: {_candidatoEscolhido.Nome}
+                               Cargo:  {_candidatoEscolhido.Cargo}
+                               Numero de Votos: {_candidatoEscolhido.NumVotos}
+                               Partido {_candidatoEscolhido.Partido}
+                               Numero: {_candidatoEscolhido.Numero}
+                               """);
             _candidatoRepository.RegistrarVoto(_candidatoEscolhido.Id); // Adiciona no Banco
             await _audioService.TocarAudio("Confirmar");
         }
