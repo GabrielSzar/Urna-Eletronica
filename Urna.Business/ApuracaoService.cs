@@ -15,12 +15,7 @@ public class ApuracaoService : IApuracaoService
     {
         throw new NotImplementedException();
     }
-
-    public bool ValidarCpf(string cpf)
-    {
-        return CpfValidator.ValidarCpf(cpf);
-    }
-
+    
     public TipoVoto ClassificarVoto(int numeroDigitado, List<CandidatoModel> candidatos)
     {
         throw new NotImplementedException();
