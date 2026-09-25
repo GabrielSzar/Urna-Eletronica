@@ -32,7 +32,7 @@
             <TextBox Name="Matricula"
                      Classes="ClasseTeste"
                      Background="DarkGray"
-                     PlaceholderText="Matricula"
+                     PlaceholderText="Cpf"
                      HorizontalAlignment="Center"
                      Width="150"
                      HorizontalContentAlignment="Center"
@@ -50,11 +50,11 @@
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
                     HorizontalAlignment="Center"
-                    Command="{Binding ValidarMatriculaCommand}"
+                    Command="{Binding VerificarCpfCommand}"
                     CommandParameter="{Binding #Matricula.Text}"/>
             
-            <TextBlock Text="{Binding MensagemMatricula}"
-                       Foreground="{Binding CorMensagemMatricula}"
+            <TextBlock Text="{Binding MensagemCpf}"
+                       Foreground="{Binding CorMensagemCpf}"
                        HorizontalAlignment="Center"/>
             
         </StackPanel>

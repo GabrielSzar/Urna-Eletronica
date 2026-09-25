@@ -1,60 +1,52 @@
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Urna.Core.Interfaces;
 using Urna.UI.Services;
 namespace Urna.UI.ViewModels;
 
 public partial class IdentificacaoViewModel : ViewModelBase
 {
     private readonly INavigationService _navigationService;
+    private readonly ICpfService _cpfService;
 
-    public IdentificacaoViewModel(INavigationService navigationService, VotacaoViewModel votacaoViewModel)
+    public IdentificacaoViewModel(INavigationService navigationService, ICpfService cpfService)
     {
         _navigationService = navigationService;
+        _cpfService = cpfService;
+
     }
-    [ObservableProperty] public string mensagemMatricula = string.Empty;
-    [ObservableProperty] public IBrush corMensagemMatricula = Brushes.Transparent;
+    [ObservableProperty] private string _mensagemCpf = string.Empty;
+    [ObservableProperty] private IBrush _corMensagemCpf = Brushes.Transparent;
+    
     [RelayCommand]
-    public void ValidarMatricula(string matricula)
+    public async Task VerificarCpf(string cpf)
     {
-        if (string.IsNullOrEmpty(matricula))
+        if (cpf.Length != 11)
         {
-            MensagemMatricula = "A matrícula deve ter 8 caracteres";
-            CorMensagemMatricula = Brushes.Red;
+            MensagemCpf = "O Cpf deve ter 11 Digitos!";
+            CorMensagemCpf = Brushes.Red;
+            return;
+        }
+        if (!cpf.All(char.IsDigit))
+        {
+            MensagemCpf = "A matrícula deve somente números!";
+            CorMensagemCpf = Brushes.Red;
             return;
         }
 
-        if (matricula.Length > 8)
+        if (_cpfService.ValidarCpf(cpf) == false)
         {
-            MensagemMatricula = "A matrícula deve ter somente 8 caracteres";
-            CorMensagemMatricula = Brushes.Red;
+            MensagemCpf = "Cpf Invalido!";
+            CorMensagemCpf = Brushes.Red;
             return;
         }
-
-        if (matricula.Length < 8)
-        {
-            MensagemMatricula = "A matrícula deve ter 8 caracteres";
-            CorMensagemMatricula = Brushes.Red;
-            return;
-        }
-
-        if (!matricula.All(char.IsDigit))
-        {
-            MensagemMatricula = "A matrícula deve somente números";
-            CorMensagemMatricula = Brushes.Red;
-            return;
-        }
-
-        if (!matricula.StartsWith("1250"))
-        {
-            MensagemMatricula = "Matrícula inválida!";
-            CorMensagemMatricula = Brushes.Red;
-            return;
-        }
-
-        MensagemMatricula = "Matrícula válida!";
-        CorMensagemMatricula = SolidColorBrush.Parse("#415158");
+        MensagemCpf = "Cpf válido!";
+        CorMensagemCpf = SolidColorBrush.Parse("#415158");
+        await Task.Delay(2000);
         _navigationService.NavigateTo<VotacaoViewModel>();
     }
 }

@@ -10,7 +10,7 @@ public class CpfService : ICpfService
         var primeiroPesos = new int[]{10,9,8,7,6,5,4,3,2 };
         var segundoPesos = new int[]{11,10,9,8,7,6,5,4,3,2 };
         
-        if (cpf.Length != 11)
+        if (cpf.Length != 11 || !cpf.All(char.IsDigit))
         {
             return false;
         }
@@ -38,7 +38,7 @@ public class CpfService : ICpfService
         int digitoVerificador = cpf[indexDigito] - '0';
         for (int i = 0; i < indexDigito; i++)
         {
-            somaResultado += pesos[i] * cpf[i] - '0';
+            somaResultado += pesos[i] * (cpf[i] - '0');
         }
         
         int resto = somaResultado % 11;

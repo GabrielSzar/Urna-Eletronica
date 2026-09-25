@@ -30,6 +30,7 @@ public partial class App : Application
         services.AddSingleton<ICandidatoRepository, CandidatoRepository>();
         services.AddSingleton<IApuracaoService, ApuracaoService>();
         services.AddSingleton<IAudioService, AudioService>();
+        services.AddSingleton<ICpfService, CpfService>();
         services.AddSingleton<INavigationService>(sp => sp.GetRequiredService<MainWindowViewModel>());
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<IdentificacaoViewModel>();
