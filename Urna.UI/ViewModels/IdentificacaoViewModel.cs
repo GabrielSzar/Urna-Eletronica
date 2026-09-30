@@ -17,11 +17,11 @@ public partial class IdentificacaoViewModel : ViewModelBase
     {
         _navigationService = navigationService;
         _cpfService = cpfService;
-
+        
     }
     [ObservableProperty] private string _mensagemCpf = string.Empty;
     [ObservableProperty] private IBrush _corMensagemCpf = Brushes.Transparent;
-    
+
     [RelayCommand]
     public async Task VerificarCpf(string cpf)
     {
