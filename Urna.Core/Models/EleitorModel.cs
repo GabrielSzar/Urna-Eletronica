@@ -9,5 +9,5 @@ public class EleitorModel
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     [Required]
     public string ?Cpf { get; set; }
-    public bool JaVotou { get; set; }
+    public bool JaVotou { get; set; } = false;
 }

@@ -6,6 +6,22 @@ namespace Urna.Data.Repositories;
 
 public class EleitorRepository : IEleitorRepository
 {
+    public void AdicionarEleitor(string cpf)
+    {
+        EleitorModel novoEleitor = new EleitorModel()
+        {
+            Cpf = cpf,
+            JaVotou = false
+        };
+
+        using (var context = new UrnaDbContext())
+        {
+            var eleitor = context.Eleitors.Add(novoEleitor);
+
+            context.SaveChanges();
+        }
+    }
+
     public bool JaVotou(string cpf)
     {
         using (var context = new UrnaDbContext())
