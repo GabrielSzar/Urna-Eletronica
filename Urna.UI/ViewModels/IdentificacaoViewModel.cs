@@ -44,8 +44,8 @@ public partial class IdentificacaoViewModel : ViewModelBase
             CorMensagemCpf = Brushes.Red;
             return;
         }
-        MensagemCpf = "Cpf válido!";
         CorMensagemCpf = SolidColorBrush.Parse("#415158");
+        MensagemCpf = "Carregando...";
         await Task.Delay(2000);
         _navigationService.NavigateTo<VotacaoViewModel>();
     }
