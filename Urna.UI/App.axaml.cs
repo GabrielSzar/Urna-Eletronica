@@ -36,6 +36,7 @@ public partial class App : Application
         services.AddTransient<IdentificacaoViewModel>();
         services.AddTransient<VotacaoViewModel>();
         services.AddTransient<ResultadoViewModel>();
+        services.AddTransient<EleitorRepository>();
         var provider = services.BuildServiceProvider();
         
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
