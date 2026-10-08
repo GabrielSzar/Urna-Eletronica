@@ -36,7 +36,7 @@ public class CsvHandler
             return partido;
         }
 
-        return Partidos.SemPartido;
+        return Partidos.SEM_PARTIDO;
     }
     public static IEnumerable<CandidatoModel> LerCandidatos(string nomeArquivo, string prefixoUf, Func<string, bool> filtroCargo)
     {   // Gustavo Galassi SQ_CANDIDATO: 130002553354 não esta se candidatando mais, linha morta so csv, mas não afeta o funcionamento

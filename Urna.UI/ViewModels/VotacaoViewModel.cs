@@ -35,7 +35,7 @@ public partial class VotacaoViewModel : ViewModelBase
          new ("Presidente", false, 2)];
     [ObservableProperty] 
     [NotifyPropertyChangedFor(nameof(QuadradosVisuais))]
-    private int _indiceCargoAtual = 0;
+    private int _indiceCargoAtual;
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(QuadradosVisuais))]
     private string _numeroDigitado = string.Empty;
@@ -49,52 +49,49 @@ public partial class VotacaoViewModel : ViewModelBase
     private int MaxDigitos => CargosLista[IndiceCargoAtual].Digitos; 
     private string? CargoAtual => CargosLista[IndiceCargoAtual].Nome;
     private string _votoPrimeiroSenador = string.Empty;
-    private CandidatoModel? _candidatoEscolhido = new CandidatoModel();
-    private bool _branco = false;
-    private bool _nulo = false;
+    private CandidatoModel? _candidatoEscolhido;
+    private TipoVoto _tipoVoto = TipoVoto.INVALIDO;
     
     [RelayCommand]
     private void AdicionarNumero(string digito)
-    {   
-        Limpar();
+    {
         if (NumeroDigitado.Length >= MaxDigitos)
         {   
+            return;
+        }
+        NumeroDigitado += digito;
+        if (NumeroDigitado.Length != MaxDigitos)
+        {   
+            Limpar();
+            return;
+        }
+        var candidatosLista = _candidatoRepository.ListarTodos();
+        var candidato = candidatosLista.FirstOrDefault(c => c.Numero == Convert.ToInt32(NumeroDigitado) && c.Cargo == CargoAtual);
+        if ( candidato == null)
+        {
+            _tipoVoto = TipoVoto.NULO;
             Aviso = "VOTO NULO";
             AvisosMenores = "CONFIRMA para CONFIRMAR este voto\n" +
                             "CORRIGE para REINICIAR este voto";
             return;
         }
-        NumeroDigitado += digito;
-        if (NumeroDigitado.Length == MaxDigitos)
-        {
-            var candidatosLista = _candidatoRepository.ListarTodos();
-            var candidato = candidatosLista.FirstOrDefault(c => c.Numero == Convert.ToInt32(NumeroDigitado) && c.Cargo == CargoAtual);
-            if ( candidato == null)
-            {
-                _nulo = true;
-                Aviso = "VOTO NULO";
-                AvisosMenores = "CONFIRMA para CONFIRMAR este voto\n" +
-                                "CORRIGE para REINICIAR este voto";
-                return;
-            }
 
-            _candidatoEscolhido = candidato;
-            EscolhidoNome = candidato.Nome;
-            EscolhidoPartido = candidato.Partido.ToString();
-            EscolhidoFoto = new Bitmap(AssetLoader.Open(new Uri($"avares://Urna.UI/{candidato.FotoCandidato}")));
-
-        }
+        _candidatoEscolhido = candidato;
+        EscolhidoNome = candidato.Nome;
+        EscolhidoPartido = candidato.Partido.ToString();
+        EscolhidoFoto = new Bitmap(AssetLoader.Open(new Uri($"avares://Urna.UI/{candidato.FotoCandidato}")));
     }
 
     [RelayCommand]
     private async Task Branco()
-    {
-        if (NumeroDigitado == string.Empty && _branco)
+    {   
+        Limpar();
+        if (NumeroDigitado == string.Empty && _tipoVoto == TipoVoto.BRANCO)
         {
             await _audioService.TocarAudio("Alerta");
         }
         NumeroDigitado = string.Empty;
-        _branco = true;
+        _tipoVoto = TipoVoto.BRANCO;
         Aviso = "VOTO EM BRANCO";
         AvisosMenores = "CONFIRMA para CONFIRMAR este voto\n" +
                         "CORRIGE para REINICIAR este voto";
@@ -107,40 +104,42 @@ public partial class VotacaoViewModel : ViewModelBase
     }
     [RelayCommand]
     private async Task ConfirmarVoto()
-    {   
-        var candidatosLista = _candidatoRepository.ListarTodos();
-        if (_branco)
+    {
+        ValidarVoto();
+        if (NumeroDigitado.Length != MaxDigitos && _tipoVoto == TipoVoto.INVALIDO)
         {   
-            _candidatoEscolhido = candidatosLista.First(c => c.Nome == "Branco" && c.Cargo == CargoAtual);
-            Console.WriteLine("É Branco");
-        }
-
-        if (_nulo)
-        {   
-            _candidatoEscolhido = candidatosLista.First(c => c.Nome == "Nulo" && c.Cargo == CargoAtual);
-            Console.WriteLine("É Nulo");
-        }
-        
-        if (NumeroDigitado.Length != MaxDigitos && !_nulo && !_branco)
-        {   
-            Console.WriteLine("Retornou");
             return;
         }
         
-        if (NumeroDigitado != _votoPrimeiroSenador || _nulo || _branco)
+        Console.WriteLine($"""
+                           Adicionando No Banco o Canditado:
+                           ID: {_candidatoEscolhido.Id}
+                           Nome: {_candidatoEscolhido.Nome}
+                           Cargo:  {_candidatoEscolhido.Cargo}
+                           Numero de Votos: {_candidatoEscolhido.NumVotos}
+                           Partido: {_candidatoEscolhido.Partido}
+                           Numero: {_candidatoEscolhido.Numero}
+                           """);
+        if (NumeroDigitado != _votoPrimeiroSenador)
         {   
-            Console.WriteLine($"""
-                               Adicionando Canditado ID: {_candidatoEscolhido.Id}
-                               Nome: {_candidatoEscolhido.Nome}
-                               Cargo:  {_candidatoEscolhido.Cargo}
-                               Numero de Votos: {_candidatoEscolhido.NumVotos}
-                               Partido {_candidatoEscolhido.Partido}
-                               Numero: {_candidatoEscolhido.Numero}
-                               """);
             _candidatoRepository.RegistrarVoto(_candidatoEscolhido.Id); // Adiciona no Banco
-            await _audioService.TocarAudio("Confirmar");
         }
+        await _audioService.TocarAudio("Confirmar");
         await AvancarVoto();
+    }
+
+    private void ValidarVoto()
+    {
+        var candidatosLista = _candidatoRepository.ListarTodos();
+        if (_tipoVoto == TipoVoto.BRANCO)
+        {   
+            _candidatoEscolhido = candidatosLista.First(c => c.Nome == "Branco" && c.Cargo == CargoAtual);
+        }
+
+        if (_tipoVoto == TipoVoto.NULO)
+        {   
+            _candidatoEscolhido = candidatosLista.First(c => c.Nome == "Nulo" && c.Cargo == CargoAtual);
+        }
     }
     
     private async Task AvancarVoto()
@@ -162,8 +161,7 @@ public partial class VotacaoViewModel : ViewModelBase
 
     private void Limpar()
     {
-        _branco = false;
-        _nulo = false;
+        _tipoVoto = TipoVoto.INVALIDO;
         EscolhidoFoto = null;
         EscolhidoNome = string.Empty;
         EscolhidoPartido = string.Empty;

@@ -15,9 +15,4 @@ public class ApuracaoService : IApuracaoService
     {
         throw new NotImplementedException();
     }
-    
-    public TipoVoto ClassificarVoto(int numeroDigitado, List<CandidatoModel> candidatos)
-    {
-        throw new NotImplementedException();
-    }
 }
