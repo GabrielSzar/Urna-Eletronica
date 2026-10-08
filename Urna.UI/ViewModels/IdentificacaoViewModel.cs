@@ -57,12 +57,12 @@ public partial class IdentificacaoViewModel : ViewModelBase
             eleitor = _eleitorRepository.BuscarPorCpf(cpf);
         }
 
-        // if (eleitor.JaVotou)
-        // {
-        //     MensagemCpf = "Não é possível votar mais de 1 vez!";
-        //     CorMensagemCpf = Brushes.Red;
-        //     return;
-        // }
+        if (eleitor.JaVotou)
+        {
+            MensagemCpf = "Não é possível votar mais de 1 vez!";
+            CorMensagemCpf = Brushes.Red;
+            return;
+        }
 
         CorMensagemCpf = SolidColorBrush.Parse("#415158");
         MensagemCpf = "Carregando...";
