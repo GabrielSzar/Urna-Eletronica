@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,9 +15,9 @@ public partial class IdentificacaoViewModel : ViewModelBase
 {
     private readonly INavigationService _navigationService;
     private readonly ICpfService _cpfService;
-    private readonly EleitorRepository _eleitorRepository;
+    private readonly IEleitorRepository _eleitorRepository;
 
-    public IdentificacaoViewModel(INavigationService navigationService, ICpfService cpfService, EleitorRepository eleitorRepository)
+    public IdentificacaoViewModel(INavigationService navigationService, ICpfService cpfService, IEleitorRepository eleitorRepository)
     {
         _navigationService = navigationService;
         _cpfService = cpfService;
@@ -49,19 +50,19 @@ public partial class IdentificacaoViewModel : ViewModelBase
         }
 
         var eleitor = _eleitorRepository.BuscarPorCpf(cpf);
-
+        
         if (eleitor is null)
         {
             _eleitorRepository.AdicionarEleitor(cpf);
             eleitor = _eleitorRepository.BuscarPorCpf(cpf);
         }
 
-        if (eleitor.JaVotou)
-        {
-            MensagemCpf = "Não é possível votar mais de 1 vez!";
-            CorMensagemCpf = Brushes.Red;
-            return;
-        }
+        // if (eleitor.JaVotou)
+        // {
+        //     MensagemCpf = "Não é possível votar mais de 1 vez!";
+        //     CorMensagemCpf = Brushes.Red;
+        //     return;
+        // }
 
         CorMensagemCpf = SolidColorBrush.Parse("#415158");
         MensagemCpf = "Carregando...";

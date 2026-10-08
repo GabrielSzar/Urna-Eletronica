@@ -27,7 +27,10 @@ public class EleitorRepository : IEleitorRepository
         using (var context = new UrnaDbContext())
         {
             var eleitor = context.Eleitors.FirstOrDefault(eleitor => eleitor.Cpf == cpf);
-
+            if (eleitor == null)
+            {
+                throw new InvalidDataException("O metodo JaVotou() não achou nenhum eleitor");
+            }
             if (eleitor.JaVotou)
             {
                 return true;
@@ -42,14 +45,17 @@ public class EleitorRepository : IEleitorRepository
         using (var context = new UrnaDbContext())
         {
             var eleitor = context.Eleitors.FirstOrDefault(eleitor => eleitor.Cpf == cpf);
-
+            if (eleitor == null)
+            {
+                throw new InvalidDataException("O metodo MarcarComoVotado() não achou nenhum eleitor");
+            }
             eleitor.JaVotou = true;
 
             context.SaveChanges();
         }
     }
 
-    public EleitorModel BuscarPorCpf(string cpf)
+    public EleitorModel? BuscarPorCpf(string cpf)
     {
         using (var context = new UrnaDbContext())
         {
